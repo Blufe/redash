@@ -87,8 +87,6 @@ class JSONEncoder(simplejson.JSONEncoder):
                 result = result[:23] + result[26:]
             if result.endswith('+00:00'):
                 result = result[:-6] + 'Z'
-        elif isinstance(o, buffer):
-            result = binascii.hexlify(o)
         elif isinstance(o, datetime.date):
             result = o.isoformat()
         elif isinstance(o, datetime.time):
@@ -97,6 +95,8 @@ class JSONEncoder(simplejson.JSONEncoder):
             result = o.isoformat()
             if o.microsecond:
                 result = result[:12]
+        elif isinstance(o, buffer):
+            result = binascii.hexlify(o)
         else:
             result = super(JSONEncoder, self).default(o)
         return result
